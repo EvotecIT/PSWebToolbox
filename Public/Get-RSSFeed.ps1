@@ -3,7 +3,8 @@ function Get-RSSFeed {
     param(
         [Parameter(ValueFromPipeline)][System.Uri[]] $Url,
         [nullable[int]] $Count = 10,
-        [switch] $All
+        [switch] $All,
+        [switch] $CategoriesOnly
     )
     Begin {
         [Object] $FeedGlobal = $null
@@ -37,6 +38,11 @@ function Get-RSSFeed {
         }
     }
     End {
-        Format-RSSFeed -Feed $FeedGlobal
+        $Value = Format-RSSFeed -Feed $FeedGlobal
+        if ($CategoriesOnly) {
+            return $Value.Categories -Split ',' | Group-Object -NoElement | Sort-Object Count -Descending
+        } else {
+            return $Value
+        }
     }
 }
