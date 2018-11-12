@@ -1,0 +1,10 @@
+build: off
+
+test_script:
+  - ps:   .\PSWebToolbox.Tests.ps1
+  - pwsh: .\PSWebToolbox.Tests.ps1
+
+skip_commits:
+  files:
+    - README.md
+    - Data/**/*
