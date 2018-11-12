@@ -26,4 +26,8 @@ Describe 'Get-RssFeed - Should get RSS feeds' {
         'https://ridicurious.com/feed' | Get-RSSFeed -Count 12
         $Feed.Count | Should -Be 36
     }
+    It 'Get 12 articles from blog and check their categories count' {
+        $Feed = 'https://evotec.xyz/feed'| Get-RSSFeed -Count 12 -CategoriesOnly
+        $Feed.Name.Count | Should -BeGreaterThan 12
+    }
 }
