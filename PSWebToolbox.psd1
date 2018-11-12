@@ -11,7 +11,7 @@
     RootModule           = 'PSWebToolbox.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.0.3'
+    ModuleVersion        = '0.0.4'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop', 'Core')
@@ -49,10 +49,10 @@
             Tags       = @('RSS', 'Blog', 'Viewer', 'Web')
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/EvotecIT/PSRSSReader'
+            ProjectUri = 'https://github.com/EvotecIT/PSWebToolbox'
 
             # A URL to an icon representing this module.
-            IconUri    = 'https://evotec.xyz/wp-content/uploads/2018/11/PSRSSReader.png'
+            IconUri    = 'https://evotec.xyz/wp-content/uploads/2018/11/PSWebToolbox.png'
 
             # ReleaseNotes of this module
             # ReleaseNotes = ''
