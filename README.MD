@@ -96,3 +96,11 @@ Count Name
     1 blacklist
 
 ```
+
+### Example 6
+
+```powershell
+Import-Module PSWebToolbox -Force
+$Feed = Get-RssFeed -Url 'https://evotec.xyz/feed' -All
+$Feed | Out-GridView
+```
