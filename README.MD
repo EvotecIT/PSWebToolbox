@@ -7,7 +7,7 @@
 ## Examples for Get-RssFeed
 Below you can find couple of examples on `Get-RssFeed`
 
-### Examples 1
+### Example 1
 
 ```powershell
 Import-Module PSWebToolbox -Force
@@ -17,7 +17,7 @@ Import-Module PSWebToolbox -Force
 'https://ridicurious.com/feed' | Get-RSSFeed -Count 12 -Verbose | Format-Table -AutoSize
 ```
 
-### Examples 2
+### Example 2
 
 ```powershell
 Import-Module PSWebToolbox -Force
@@ -27,7 +27,7 @@ Import-Module PSWebToolbox -Force
 'http://blogs.technet.com/b/heyscriptingguy/atom.aspx' | Get-RssFeed -Verbose -Count 15 | Out-GridView
 ```
 
-### Examples 3
+### Example 3
 
 ```powershell
 Import-Module PSWebToolbox -Force
@@ -38,4 +38,12 @@ $Blogs += Get-RSSFeed -url 'https://ridicurious.com/feed' -Verbose
 $Blogs += Get-RSSFeed -url 'https://kevinmarquette.github.io/feed' -Verbose -Count 10
 $Blogs | Format-Table -AutoSize
 $Blogs | Out-GridView
+```
+
+### Example 4
+
+```powershell
+Import-Module PSWebToolbox -Force
+
+Get-RSSFeed -Url 'https://blogs.msdn.microsoft.com/powershell/feed/' -Count 15 | Format-Table #-Autosize
 ```
