@@ -14,4 +14,16 @@ Describe 'Get-RssFeed - Should get RSS feeds' {
         $Feed = 'https://evotec.xyz/feed' | Get-RssFeed
         $Feed.Count | Should -Be 10
     }
+    It 'Get 10 articles from each of 3 defined blogs via pipeline (should return 30 articles)' {
+        $Feed = 'https://evotec.xyz/feed',
+        'https://blogs.technet.microsoft.com/heyscriptingguy/feed/',
+        'https://ridicurious.com/feed' | Get-RSSFeed -Count 10
+        $Feed.Count | Should -Be 30
+    }
+    It 'Get 12 articles from each of 3 defined blogs via pipeline (should return 36 articles)' {
+        $Feed = 'https://evotec.xyz/feed',
+        'https://blogs.technet.microsoft.com/heyscriptingguy/feed/',
+        'https://ridicurious.com/feed' | Get-RSSFeed -Count 12
+        $Feed.Count | Should -Be 36
+    }
 }

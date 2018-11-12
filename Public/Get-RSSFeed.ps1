@@ -1,17 +1,17 @@
 function Get-RSSFeed {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline)][System.Uri] $Url,
+        [Parameter(ValueFromPipeline)][System.Uri[]] $Url,
         [nullable[int]] $Count = 10,
         [switch] $All
     )
     Begin {
-        [Object] $Feed = $null
-        [int] $PageCount = 1
+        [Object] $FeedGlobal = $null
     }
     Process {
+        [int] $PageCount = 1
+        [Object] $Feed = $null
         $BuildURL = "$Url"
-
         while ($true) {
             Write-Verbose "Get-Feed - Count: $($Feed.Count) Expected Count: $Count URL: $BuildURL"
             try {
@@ -25,6 +25,8 @@ function Get-RSSFeed {
                 # place holder
             } elseif ($Count) {
                 if ($Feed.Count -ge $Count) {
+                    # if count is defined return only defined count
+                    $FeedGlobal += $Feed | Select-Object -First $Count
                     break
                 }
             } else {
@@ -35,10 +37,6 @@ function Get-RSSFeed {
         }
     }
     End {
-        if ($Count) {
-            # if count is defined return only defined count
-            $Feed = $Feed | Select-Object -First $Count
-        }
-        Format-RSSFeed -Feed $Feed
+        Format-RSSFeed -Feed $FeedGlobal
     }
 }
