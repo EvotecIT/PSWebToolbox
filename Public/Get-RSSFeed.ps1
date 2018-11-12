@@ -2,8 +2,8 @@ function Get-RSSFeed {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline)][System.Uri[]] $Url,
-        [nullable[int]] $Count = 10,
-        [switch] $All,
+        [Parameter(ParameterSetName = 'Count')][nullable[int]] $Count = 10,
+        [Parameter(ParameterSetName = 'All')] [switch] $All,
         [switch] $CategoriesOnly
     )
     Begin {
