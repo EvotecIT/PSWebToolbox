@@ -23,7 +23,13 @@ function Get-RSSFeed {
                 $Feed += Invoke-RestMethod -Uri $BuildURL -Verbose:$false
             } catch {
                 $ErrorMessage = $_.Exception.Message -replace "`n", " " -replace "`r", " "
-                Write-Warning "Get-Feed - Error: $ErrorMessage"
+                if ($PageCount -eq 1) {
+                    #
+                    Write-Warning "Get-Feed - Url: $Url CurrentUrl: $BuildURL Error: $ErrorMessage"
+                } else {
+                    # Basically means end of feed for /?paged if it's more then 1 page being fed
+                    # Especially for -All switch
+                }
                 break;
             }
             if ($All) {
