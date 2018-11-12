@@ -7,8 +7,7 @@ function Get-RSSFeed {
     )
     Begin {
         [Object] $Feed = $null
-        $PageCount = 1
-        #$ContentType = "application/xml; charset=utf-8"
+        [int] $PageCount = 1
     }
     Process {
         $BuildURL = "$Url"
@@ -16,13 +15,12 @@ function Get-RSSFeed {
         while ($true) {
             Write-Verbose "Get-Feed - Count: $($Feed.Count) Expected Count: $Count URL: $BuildURL"
             try {
-                $Feed += Invoke-RestMethod -Uri $BuildURL -Verbose:$false # -ContentType $ContentType -UseBasicParsing
+                $Feed += Invoke-RestMethod -Uri $BuildURL -Verbose:$false
             } catch {
                 $ErrorMessage = $_.Exception.Message -replace "`n", " " -replace "`r", " "
                 Write-Warning "Get-Feed - Error: $ErrorMessage"
                 break;
             }
-            #$RssData += $Feed.rss.channel.item #| Select-Object * -ExcludeProperty InnerXML, OuterXML, InnerText
             if ($All) {
                 # place holder
             } elseif ($Count) {
