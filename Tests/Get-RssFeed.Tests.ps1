@@ -1,5 +1,5 @@
 #Requires -Modules Pester
-Import-Module $PSScriptRoot\..\PSWebToolbox.psd1 -Force #-Verbose
+Import-Module $PSScriptRoot\..\PSWebToolbox.psd1 -Force
 
 Describe 'Get-RssFeed - Should get RSS feeds' {
     It 'Get 15 articles from Evotec Blog' {

@@ -1,19 +1,24 @@
 function Format-RSSFeed {
+    [CmdletBinding()]
     param (
-        $Feed
+        [System.Collections.IList] $Feed
     )
     $Entries = foreach ($Entry in $Feed) {
+        if ($Entry.link -like '*#*') {
+            $Link = ($Entry.link).Split('#')[0]
+        } else {
+            $Link = $Entry.link
+        }
         [PSCustomObject] @{
-            #PostID      = $Entry."post-id".InnerText
             Title       = $Entry.title
-            Link        = $Entry.link
-            PublishDate = try { [DateTime] $Entry.pubDate } catch { $Entry.pubDate } ; #if ($Entry.pubDate -is [DateTime]) { [DateTime] $Entry.pubDate } else { $Entry.pubDate }
+            Link        = $Link
+
+            PublishDate = try { [DateTime] $Entry.pubDate } catch { $Entry.pubDate } ;
             Creator     = $Entry.Creator.'#cdata-section'
             Categories  = ($Entry.Category.'#cdata-section' | Sort-Object -Unique) -join ',' # actually for Wordpress it's a mix of Category/Tags
-            isPermaLink = $Entry.Guid.isPermaLink
             LinkPerm    = $Entry.Guid.'#text'
-            Description = $Entry.description.'#cdata-section'
-            #Content           = ($Entry.encoded.'#cdata-section' -replace '<[^>]+>', '')
+            Description = ConvertFrom-HTML -HTML ((($Entry.description.'#cdata-section') -split '<p>', 0, 'SimpleMatch,IgnoreCase')[1]) -RemoveTags
+            IsPermaLink = $Entry.Guid.isPermaLink
         }
     }
     return $Entries

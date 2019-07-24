@@ -3,7 +3,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/gl0ekjy96mg2gcmt?svg=true)](https://ci.appveyor.com/project/PrzemyslawKlys/pswebtoolbox)
 [![Build Status](https://dev.azure.com/evotecpl/PSWebToolbox/_apis/build/status/EvotecIT.PSWebToolbox)](https://dev.azure.com/evotecpl/PSWebToolbox/_build/latest?definitionId=4)
 
-
 ## Examples for Get-RssFeed
 Below you can find couple of examples on `Get-RssFeed`
 
@@ -55,7 +54,7 @@ Import-Module PSWebToolbox -Force
 Get-RssFeed -Url 'https://evotec.xyz/feed' -CategoriesOnly
 ```
 
-```
+```powershell
 # Output:
 Count Name
 ----- ----
