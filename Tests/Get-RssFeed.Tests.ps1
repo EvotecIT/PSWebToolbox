@@ -33,5 +33,6 @@ Describe 'Get-RssFeed - Should get RSS feeds' {
     It 'Get All articles from blog' {
         $Feed = 'https://evotec.xyz/feed'| Get-RSSFeed -All
         $Feed.Count | Should -BeGreaterThan 130
+        $Feed.Count | Should -BeLessThan 300
     }
 }

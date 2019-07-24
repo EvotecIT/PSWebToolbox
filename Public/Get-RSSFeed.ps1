@@ -2,25 +2,27 @@ function Get-RSSFeed {
     [CmdletBinding(DefaultParameterSetName = 'Count')]
     param(
         [Parameter(ValueFromPipeline)][System.Uri[]] $Url,
-        [Parameter(ParameterSetName = 'Count')][nullable[int]] $Count = 10,
+        [Parameter(ParameterSetName = 'Count')][int] $Count = 10,
         [Parameter(ParameterSetName = 'All')] [switch] $All,
         [switch] $CategoriesOnly
     )
     Begin {
-        [Object] $FeedGlobal = $null
-        switch ($PsCmdlet.ParameterSetName) {
-            'All' { $Count = $null; break}
-            'Count' { break }
+        if ($All) {
+            $Count = 999999999
         }
+        $Feed = [System.Collections.Generic.List[Object]]::new()
     }
     Process {
+        [int] $CurrentCount = 0
+
         [int] $PageCount = 1
         [System.Uri] $BuildURL = "$Url"
-        [Object] $Feed = $null
-        while ($true) {
-            Write-Verbose "Get-Feed - Count: $($Feed.Count) Expected Count: $Count URL: $BuildURL"
+
+        $Output = while ($true) {
+            Write-Verbose "Get-Feed - Count: $($CurrentCount) Expected Count: $Count URL: $BuildURL"
             try {
-                $Feed += Invoke-RestMethod -Uri $BuildURL -Verbose:$false
+                [Array] $Data = Invoke-RestMethod -Uri $BuildURL -Verbose:$false
+                $CurrentCount = $CurrentCount + $Data.Count
             } catch {
                 $ErrorMessage = $_.Exception.Message -replace "`n", " " -replace "`r", " "
                 if ($PageCount -eq 1) {
@@ -32,24 +34,27 @@ function Get-RSSFeed {
                 }
                 break;
             }
-            if ($All) {
-                $FeedGlobal += $Feed
-            } elseif ($Count) {
-                if ($Feed.Count -ge $Count) {
-                    # if count is defined return only defined count
-                    $FeedGlobal += $Feed | Select-Object -First $Count
-                    break
-                }
-            } else {
-                # Shouldn't happen really
+            # return Data
+            $Data
+
+            #$FeedGlobal.AddRange($Data)
+            # Verify if we're ok to close or not
+            if ($CurrentCount -ge $Count) {
+                # if count is defined return only defined count
                 break
             }
             $PageCount++
             $BuildURL = "$Url/?paged=$PageCount"
         }
+        if ($Output.Count -ge $Count) {
+            $Output = $Output | Select-Object -First $Count
+        }
+        $Feed.AddRange($Output)
+
     }
     End {
-        $Value = Format-RSSFeed -Feed $FeedGlobal
+
+        $Value = Format-RSSFeed -Feed $Feed
         if ($CategoriesOnly) {
             return $Value.Categories -Split ',' | Group-Object -NoElement | Sort-Object Count -Descending
         } else {
