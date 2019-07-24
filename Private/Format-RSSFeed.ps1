@@ -3,11 +3,11 @@ function Format-RSSFeed {
         $Feed
     )
     $Entries = foreach ($Entry in $Feed) {
-        [PSCustomObject][ordered] @{
+        [PSCustomObject] @{
             #PostID      = $Entry."post-id".InnerText
             Title       = $Entry.title
             Link        = $Entry.link
-            PublishDate = if ($Entry.pubDate -is [DateTime]) { [DateTime] $Entry.pubDate } else { $Entry.pubDate }
+            PublishDate = try { [DateTime] $Entry.pubDate } catch { $Entry.pubDate } ; #if ($Entry.pubDate -is [DateTime]) { [DateTime] $Entry.pubDate } else { $Entry.pubDate }
             Creator     = $Entry.Creator.'#cdata-section'
             Categories  = ($Entry.Category.'#cdata-section' | Sort-Object -Unique) -join ',' # actually for Wordpress it's a mix of Category/Tags
             isPermaLink = $Entry.Guid.isPermaLink
